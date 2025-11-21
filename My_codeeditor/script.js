@@ -110,3 +110,34 @@ $('#webTabs')?.addEventListener('keydown', (e)=>{
 
 showPane('html');
 
+function buildWebSrcdoc(withTests = false){
+  const html = ed_html.getValue();
+  const css  = ed_css.getValue();
+  const js   = ed_js.getValue();
+  const tests = ($("#testArea") ?.value || '').trim();
+
+  return `
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>${css}</style>
+  </head>
+  <body>
+    ${html}
+    <script>
+      try{
+        ${js}
+      
+        ${withTests && tests ? `\n/* tests */\n${tests}` : ''}
+
+      }
+        catch(e){
+        console.error(e)
+        }
+    <\/script>
+  </body>
+  </html>`;
+
+}
